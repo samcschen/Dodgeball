@@ -21,7 +21,8 @@ public class WorldRenderer {
 
     public void renderObjects(){
         batch.begin();
-        batch.draw(Assets.playerOne, world.playerOne.position.x, world.playerOne.position.y);
+        batch.draw(Assets.playerOne, world.playerOne.position.x, world.playerOne.position.y, world.playerOne.PLAYER_WIDTH/2, world.playerOne.PLAYER_HEIGHT/2,world.playerOne.PLAYER_WIDTH, world.playerOne.PLAYER_HEIGHT, 1f,1f,world.playerOne.rotation,0,0,64,64,false,false);
+        batch.draw(Assets.crosshairOne, world.crosshair.position.x, world.crosshair.position.y);
         batch.end();
     }
 }
