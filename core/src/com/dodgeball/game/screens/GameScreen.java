@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(Dodgeball game){
         this.game = game;
         world = new World(this);
-        renderer = new WorldRenderer(game.batch,world);
+        renderer = new WorldRenderer(game.batch,game.shapeRenderer,world);
 
         SCREEN_WIDTH = Gdx.graphics.getWidth();
         SCREEN_HEIGHT = Gdx.graphics.getHeight();
@@ -58,6 +58,7 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta){
         cam.update();
         game.batch.setProjectionMatrix(cam.combined);
+        game.shapeRenderer.setProjectionMatrix(world.gameScreen.cam.combined);
 
         update(delta);
         draw();
