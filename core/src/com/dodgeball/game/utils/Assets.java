@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Assets {
 
-    public static Texture playerOne;
+    public static Texture ship;
     public static Texture bullet;
     public static Texture crosshairs;
     public static TextureRegion crosshairOne;
@@ -22,7 +22,7 @@ public class Assets {
 
     public static void load(){
 
-        playerOne = loadTexture("player.png");
+        ship = loadTexture("player.png");
         bullet = loadTexture("bullet.png");
         crosshairs = loadTexture("crosshairs.png");
 

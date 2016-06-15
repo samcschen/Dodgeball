@@ -7,9 +7,10 @@ import com.dodgeball.game.utils.World;
  */
 public class Bullet extends DynamicGameObject{
     World world;
-    public final int SPEED = 1500;
+    public final int SPEED = 500;
     public static final int BULLET_WIDTH = 13;
     public static final int BULLET_HEIGHT = 54;
+    public int timer =0;
 
     public Bullet(float x, float y,float rotation, World world){
 
@@ -24,5 +25,7 @@ public class Bullet extends DynamicGameObject{
         position.add(velocity.x*deltaTime, velocity.y*deltaTime,0);
         bounds.setPosition(position.x, position.y);
         bounds.setRotation(rotation);
+
+        timer++;
     }
 }

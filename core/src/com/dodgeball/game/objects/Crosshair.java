@@ -24,8 +24,8 @@ public class Crosshair extends GameObject{
         position.x = position.x-CROSSHAIR_WIDTH/2;
         position.y = position.y-CROSSHAIR_WIDTH/2;
 
-        center.x = position.x-CROSSHAIR_WIDTH/2;
-        center.y = position.y-CROSSHAIR_HEIGHT/2;
+        center.x = position.x+CROSSHAIR_WIDTH/2;
+        center.y = position.y+CROSSHAIR_HEIGHT/2;
     }
 
     public Vector3 getMousePosition(){

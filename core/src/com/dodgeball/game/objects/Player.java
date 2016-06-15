@@ -11,7 +11,7 @@ public class Player extends DynamicGameObject{
 
     public static final float PLAYER_WIDTH = 64;
     public static final float PLAYER_HEIGHT = 64;
-    public static final int RELOAD_TIME = 15;
+    public static final int RELOAD_TIME = 45;
     public static final int MAX_SPEED = 400;
     public int reloadTimer = 0;
 
@@ -21,22 +21,24 @@ public class Player extends DynamicGameObject{
     public Player(float x, float y, World world){
 
         super(x,y,PLAYER_WIDTH,PLAYER_HEIGHT);
-        acceleration.x = 20;
-        acceleration.y = 20;
+        acceleration.x = 50;
+        acceleration.y = 50;
         this.world = world;
 
     }
 
     public void update(float deltaTime){
-        position.add(velocity.x*deltaTime, velocity.y*deltaTime,0);
-        center.x = position.x-PLAYER_WIDTH/2;
-        center.y = position.y-PLAYER_HEIGHT/2;
-        bounds.setPosition(position.x, position.y);
+        updateLocation(deltaTime);
         control();
         slowDown();
         orient();
     }
-
+    public void updateLocation(float deltaTime){
+        position.add(velocity.x*deltaTime, velocity.y*deltaTime,0);
+        center.x = position.x+PLAYER_WIDTH/2;
+        center.y = position.y+PLAYER_HEIGHT/2;
+        bounds.setPosition(position.x, position.y);
+    }
     public void control(){
         reloadTimer++;
         if(Gdx.input.isKeyPressed(Input.Keys.A)){
@@ -53,7 +55,7 @@ public class Player extends DynamicGameObject{
         }
         if(Gdx.input.isTouched()&&reloadTimer%RELOAD_TIME==0){
 
-            world.bullets.add(new Bullet(position.x,position.y,360-rotation,world));
+            world.playerBullets.add(new Bullet(position.x,position.y,360-rotation,world));
             reloadTimer = 0;
 
         }
@@ -73,17 +75,8 @@ public class Player extends DynamicGameObject{
         if (velocity.y<-MAX_SPEED){
             velocity.y=-MAX_SPEED;
         }
-        if (velocity.x>-10&&velocity.x<0){
+        if(center.x<0&&velocity.x<0){
             velocity.x=0;
-        }
-        if (velocity.x<10&&velocity.x>0){
-            velocity.x=0;
-        }
-        if (velocity.y>-10&&velocity.y<0){
-            velocity.y=0;
-        }
-        if (velocity.y<10&&velocity.y>0){
-            velocity.y=0;
         }
     }
 

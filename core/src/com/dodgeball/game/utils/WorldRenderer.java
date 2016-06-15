@@ -2,6 +2,8 @@ package com.dodgeball.game.utils;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
+import com.dodgeball.game.objects.Bullet;
 
 /**
  * Created by samuel on 6/11/16.
@@ -20,24 +22,37 @@ public class WorldRenderer {
 
     public void render(){
         renderDebug();
-        renderObjects();
+        batch.begin();
+        renderShips();
+        renderInterface();
+        renderBullets(world.playerBullets);
+        renderBullets(world.shipOneBullets);
+        renderBullets(world.shipTwoBullets);
+        batch.end();
     }
 
-    public void renderObjects(){
-        batch.begin();
-        batch.draw(Assets.playerOne, world.playerOne.position.x, world.playerOne.position.y, world.playerOne.PLAYER_WIDTH/2, world.playerOne.PLAYER_HEIGHT/2,world.playerOne.PLAYER_WIDTH, world.playerOne.PLAYER_HEIGHT, 1f,1f,world.playerOne.rotation,0,0,64,64,false,false);
+    public void renderShips(){
+        batch.draw(Assets.ship, world.playerOne.position.x, world.playerOne.position.y, world.playerOne.PLAYER_WIDTH/2, world.playerOne.PLAYER_HEIGHT/2,world.playerOne.PLAYER_WIDTH, world.playerOne.PLAYER_HEIGHT, 1f,1f,world.playerOne.rotation,0,0,64,64,false,false);
+        batch.draw(Assets.ship, world.shipOne.position.x, world.shipOne.position.y, world.shipOne.SHIP_WIDTH/2, world.shipOne.SHIP_HEIGHT/2,world.shipOne.SHIP_WIDTH, world.shipOne.SHIP_HEIGHT, 1f,1f,world.shipOne.rotation,0,0,64,64,false,false);
+        batch.draw(Assets.ship, world.shipTwo.position.x, world.shipTwo.position.y, world.shipTwo.SHIP_WIDTH/2, world.shipTwo.SHIP_HEIGHT/2,world.shipTwo.SHIP_WIDTH, world.shipTwo.SHIP_HEIGHT, 1f,1f,world.shipTwo.rotation,0,0,64,64,false,false);
+
+    }
+    public void renderInterface(){
         batch.draw(Assets.crosshairOne, world.crosshair.position.x, world.crosshair.position.y);
-        for(int i = 0;i<world.bullets.size;i++){
-            batch.draw(Assets.bullet,world.bullets.get(i).position.x,world.bullets.get(i).position.y,world.bullets.get(i).BULLET_WIDTH/2, world.bullets.get(i).BULLET_HEIGHT/2,world.bullets.get(i).BULLET_WIDTH, world.bullets.get(i).BULLET_HEIGHT, 1f,1f,world.bullets.get(i).rotation,0,0,13,54,false,false);
+    }
+    public void renderBullets(Array<Bullet> bullets){
+        for(int i = 0;i<bullets.size;i++){
+            batch.draw(Assets.bullet,bullets.get(i).position.x,bullets.get(i).position.y,bullets.get(i).BULLET_WIDTH/2, bullets.get(i).BULLET_HEIGHT/2,bullets.get(i).BULLET_WIDTH, bullets.get(i).BULLET_HEIGHT, 1f,1f,bullets.get(i).rotation,0,0,13,54,false,false);
         }
-        batch.end();
     }
 
     public void renderDebug(){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.polygon(world.playerOne.bounds.getTransformedVertices());
-        for(int i = 0;i<world.bullets.size;i++){
-            shapeRenderer.polygon(world.bullets.get(i).bounds.getTransformedVertices());
+        shapeRenderer.polygon(world.shipOne.bounds.getTransformedVertices());
+        shapeRenderer.polygon(world.shipTwo.bounds.getTransformedVertices());
+        for(int i = 0;i<world.playerBullets.size;i++){
+            shapeRenderer.polygon(world.playerBullets.get(i).bounds.getTransformedVertices());
         }
         shapeRenderer.end();
     }

@@ -1,11 +1,11 @@
 package com.dodgeball.game.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.dodgeball.game.objects.Bullet;
 import com.dodgeball.game.objects.Crosshair;
 import com.dodgeball.game.objects.Player;
+import com.dodgeball.game.objects.ShipAI;
 import com.dodgeball.game.screens.GameScreen;
 
 /**
@@ -14,7 +14,12 @@ import com.dodgeball.game.screens.GameScreen;
 public class World {
 
     public Player playerOne;
-    public Array<Bullet> bullets;
+    public ShipAI shipOne;
+    public ShipAI shipTwo;
+
+    public Array<Bullet> playerBullets;
+    public Array<Bullet> shipOneBullets;
+    public Array<Bullet> shipTwoBullets;
 
     public Crosshair crosshair;
     public MathUtils mathUtils;
@@ -23,15 +28,26 @@ public class World {
 
     public World(GameScreen gameScreen){
         playerOne = new Player(0,0, this);
+        shipOne = new ShipAI(100,100,"000000000",shipTwo,this);
+        shipTwo = new ShipAI(400,400,"000000000",shipOne,this);
+        shipOne = new ShipAI(100,100,"499499499",playerOne,this);
+
+        playerBullets = new Array<Bullet>();
+        shipOneBullets = new Array<Bullet>();
+        shipTwoBullets = new Array<Bullet>();
+
         crosshair = new Crosshair(100,100, this);
-        bullets = new Array<Bullet>();
+
         mathUtils = new MathUtils();
         this.gameScreen = gameScreen;
     }
 
     public void update(float deltaTime){
         updateCharacters(deltaTime);
-        updateBullets(deltaTime);
+        updateShips(deltaTime);
+        updateBullets(playerBullets,deltaTime);
+        updateBullets(shipOneBullets,deltaTime);
+        updateBullets(shipTwoBullets,deltaTime);
         updateInterface(deltaTime);
     }
 
@@ -39,10 +55,15 @@ public class World {
         playerOne.update(deltaTime);
     }
 
-    public void updateBullets(float deltaTime){
+    public void updateShips(float deltaTime){
+        shipOne.update(deltaTime);
+        shipTwo.update(deltaTime);
+    }
+
+    public void updateBullets(Array<Bullet> bullets,float deltaTime){
         for(int i = 0;i<bullets.size;i++){
             bullets.get(i).update(deltaTime);
-            if(bullets.get(i).position.x> gameScreen.cam.viewportWidth||bullets.get(i).position.y>gameScreen.cam.viewportHeight||bullets.get(i).position.x<0 ||bullets.get(i).position.y<0){
+            if(bullets.get(i).timer==300){
                 bullets.removeIndex(i);
             }
         }
