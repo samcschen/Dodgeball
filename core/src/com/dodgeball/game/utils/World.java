@@ -2,10 +2,7 @@ package com.dodgeball.game.utils;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import com.dodgeball.game.objects.Bullet;
-import com.dodgeball.game.objects.Crosshair;
-import com.dodgeball.game.objects.Player;
-import com.dodgeball.game.objects.ShipAI;
+import com.dodgeball.game.objects.*;
 import com.dodgeball.game.screens.GameScreen;
 
 /**
@@ -13,13 +10,15 @@ import com.dodgeball.game.screens.GameScreen;
  */
 public class World {
 
-    public Player playerOne;
     public ShipAI shipOne;
     public ShipAI shipTwo;
 
-    public Array<Bullet> playerBullets;
     public Array<Bullet> shipOneBullets;
     public Array<Bullet> shipTwoBullets;
+
+    public int generation = 0;
+    public int group = 1;
+    public Array<String> genomes;
 
     public Crosshair crosshair;
     public MathUtils mathUtils;
@@ -27,12 +26,9 @@ public class World {
 
 
     public World(GameScreen gameScreen){
-        playerOne = new Player(0,0, this);
-        shipOne = new ShipAI(100,100,"000000000",shipTwo,this);
-        shipTwo = new ShipAI(400,400,"000000000",shipOne,this);
-        shipOne = new ShipAI(100,100,"499499499",playerOne,this);
+        generateGenomes();
+        generateShips();
 
-        playerBullets = new Array<Bullet>();
         shipOneBullets = new Array<Bullet>();
         shipTwoBullets = new Array<Bullet>();
 
@@ -45,14 +41,29 @@ public class World {
     public void update(float deltaTime){
         updateCharacters(deltaTime);
         updateShips(deltaTime);
-        updateBullets(playerBullets,deltaTime);
-        updateBullets(shipOneBullets,deltaTime);
-        updateBullets(shipTwoBullets,deltaTime);
+        updateBullets(shipOneBullets,shipTwo,deltaTime);
+        updateBullets(shipTwoBullets,shipOne,deltaTime);
         updateInterface(deltaTime);
     }
+    public void generateGenomes(){
 
+        genomes = new Array<String>();
+        for(int i =0;i<16;i++){
+            genomes.add("");
+            for(int j=0;j<9;j++){
+                genomes.set(i,genomes.get(i)+String.valueOf(MathUtils.random(0,9)));
+            }
+        }
+        System.out.println("First genome: "+genomes.get(0));
+        System.out.println("Second genome: "+genomes.get(1));
+    }
+    public void generateShips(){
+        shipOne = new ShipAI(100,100,genomes.get(0),shipTwo,this);
+        shipTwo = new ShipAI(400,400,genomes.get(1),shipOne,this);
+        shipOne = new ShipAI(100,100,genomes.get(0),shipTwo,this);
+    }
     public void updateCharacters(float deltaTime){
-        playerOne.update(deltaTime);
+       // playerOne.update(deltaTime);
     }
 
     public void updateShips(float deltaTime){
@@ -60,11 +71,13 @@ public class World {
         shipTwo.update(deltaTime);
     }
 
-    public void updateBullets(Array<Bullet> bullets,float deltaTime){
+    public void updateBullets(Array<Bullet> bullets,ShipAI target, float deltaTime){
         for(int i = 0;i<bullets.size;i++){
             bullets.get(i).update(deltaTime);
-            if(bullets.get(i).timer==300){
+
+            if(bullets.get(i).timer==300||bullets.get(i).isColliding(target.bounds)){
                 bullets.removeIndex(i);
+                target.reduceHealth();
             }
         }
     }

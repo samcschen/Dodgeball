@@ -1,5 +1,7 @@
 package com.dodgeball.game.objects;
 
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.dodgeball.game.utils.World;
 
 /**
@@ -27,5 +29,8 @@ public class Bullet extends DynamicGameObject{
         bounds.setRotation(rotation);
 
         timer++;
+    }
+    public boolean isColliding(Polygon target){
+        return Intersector.overlapConvexPolygons(this.bounds,target);
     }
 }

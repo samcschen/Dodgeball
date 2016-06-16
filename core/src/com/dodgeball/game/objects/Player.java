@@ -55,7 +55,7 @@ public class Player extends DynamicGameObject{
         }
         if(Gdx.input.isTouched()&&reloadTimer%RELOAD_TIME==0){
 
-            world.playerBullets.add(new Bullet(position.x,position.y,360-rotation,world));
+            //world.playerBullets.add(new Bullet(position.x,position.y,360-rotation,world));
             reloadTimer = 0;
 
         }

@@ -14,6 +14,7 @@ public class ShipAI extends DynamicGameObject{
     public int reloadTimer = 0;
     String genome;
     Array <Float>  splitGenome;
+    public int health = 3;
     /*
      First 9 digits rotation difference from actual target
      */
@@ -85,9 +86,17 @@ public class ShipAI extends DynamicGameObject{
         reloadTimer++;
         if(reloadTimer%RELOAD_TIME==0){
             orient();
-            world.playerBullets.add(new Bullet(position.x,position.y,360-rotation,world));
+            if(target==world.shipTwo) {
+                world.shipOneBullets.add(new Bullet(position.x, position.y, 360 - rotation, world));
+            }else{
+                world.shipTwoBullets.add(new Bullet(position.x, position.y, 360 - rotation, world));
+            }
             reloadTimer = 0;
 
         }
+    }
+
+    public void reduceHealth(){
+        health = health -1;
     }
 }

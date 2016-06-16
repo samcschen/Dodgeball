@@ -25,14 +25,13 @@ public class WorldRenderer {
         batch.begin();
         renderShips();
         renderInterface();
-        renderBullets(world.playerBullets);
         renderBullets(world.shipOneBullets);
         renderBullets(world.shipTwoBullets);
         batch.end();
     }
 
     public void renderShips(){
-        batch.draw(Assets.ship, world.playerOne.position.x, world.playerOne.position.y, world.playerOne.PLAYER_WIDTH/2, world.playerOne.PLAYER_HEIGHT/2,world.playerOne.PLAYER_WIDTH, world.playerOne.PLAYER_HEIGHT, 1f,1f,world.playerOne.rotation,0,0,64,64,false,false);
+
         batch.draw(Assets.ship, world.shipOne.position.x, world.shipOne.position.y, world.shipOne.SHIP_WIDTH/2, world.shipOne.SHIP_HEIGHT/2,world.shipOne.SHIP_WIDTH, world.shipOne.SHIP_HEIGHT, 1f,1f,world.shipOne.rotation,0,0,64,64,false,false);
         batch.draw(Assets.ship, world.shipTwo.position.x, world.shipTwo.position.y, world.shipTwo.SHIP_WIDTH/2, world.shipTwo.SHIP_HEIGHT/2,world.shipTwo.SHIP_WIDTH, world.shipTwo.SHIP_HEIGHT, 1f,1f,world.shipTwo.rotation,0,0,64,64,false,false);
 
@@ -48,11 +47,13 @@ public class WorldRenderer {
 
     public void renderDebug(){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.polygon(world.playerOne.bounds.getTransformedVertices());
         shapeRenderer.polygon(world.shipOne.bounds.getTransformedVertices());
         shapeRenderer.polygon(world.shipTwo.bounds.getTransformedVertices());
-        for(int i = 0;i<world.playerBullets.size;i++){
-            shapeRenderer.polygon(world.playerBullets.get(i).bounds.getTransformedVertices());
+        for(int i = 0;i<world.shipOneBullets.size;i++){
+            shapeRenderer.polygon(world.shipOneBullets.get(i).bounds.getTransformedVertices());
+        }
+        for(int i = 0;i<world.shipTwoBullets.size;i++){
+            shapeRenderer.polygon(world.shipTwoBullets.get(i).bounds.getTransformedVertices());
         }
         shapeRenderer.end();
     }
