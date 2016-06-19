@@ -21,7 +21,7 @@ public class WorldRenderer {
     }
 
     public void render(){
-        renderDebug();
+        //renderDebug();
         batch.begin();
         renderShips();
         renderInterface();
@@ -48,6 +48,10 @@ public class WorldRenderer {
     public void renderDebug(){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.polygon(world.shipOne.bounds.getTransformedVertices());
+        shapeRenderer.polygon(world.shipOne.sensorOne.getTransformedVertices());
+        shapeRenderer.polygon(world.shipOne.sensorTwo.getTransformedVertices());
+        shapeRenderer.polygon(world.shipOne.sensorThree.getTransformedVertices());
+        shapeRenderer.polygon(world.shipOne.sensorFour.getTransformedVertices());
         shapeRenderer.polygon(world.shipTwo.bounds.getTransformedVertices());
         for(int i = 0;i<world.shipOneBullets.size;i++){
             shapeRenderer.polygon(world.shipOneBullets.get(i).bounds.getTransformedVertices());

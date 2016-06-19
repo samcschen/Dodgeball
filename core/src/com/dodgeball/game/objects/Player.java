@@ -9,13 +9,13 @@ import com.dodgeball.game.utils.World;
  */
 public class Player extends DynamicGameObject{
 
+
+    World world;
     public static final float PLAYER_WIDTH = 64;
     public static final float PLAYER_HEIGHT = 64;
     public static final int RELOAD_TIME = 45;
-    public static final int MAX_SPEED = 400;
+    public final int MAX_SPEED = 400;
     public int reloadTimer = 0;
-
-    public World world;
 
 
     public Player(float x, float y, World world){
